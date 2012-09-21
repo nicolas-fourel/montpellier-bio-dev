@@ -23,6 +23,7 @@
 package core.action;
 
 import java.awt.event.ActionEvent;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.AbstractAction;
 
@@ -56,8 +57,13 @@ public abstract class Action extends AbstractAction {
 	 * @return the time in string
 	 */
 	private String getTimeString (long ms) {
-		String time = "Operation time: " + ((ms / 1000) / 60) + " min; " + (ms / 1000) + " s; " + ms + " ms.";
-		return time;
+		String time = String.format("%d min, %d sec",
+				TimeUnit.MILLISECONDS.toMinutes(ms),
+				TimeUnit.MILLISECONDS.toSeconds(ms) -
+				TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(ms))
+				);
+		String s = "Operation time: " + time;
+		return s;
 	}
 
 

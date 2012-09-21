@@ -47,6 +47,11 @@ public class MergeHiCTimingORIToFile extends LineFileReader<HicTimingLine> {
 	/** Generated default serial version ID */
 	private static final long serialVersionUID = 4495558610088027673L;
 
+	public static final int NUMBER = 0;
+	public static final int NAMES = 1;
+
+	private final int insertOption;
+
 	private final File outputFile;
 	private final ProjectChromosome projectChromosome;		// The instance of the chromosome project.
 	private final List<Map<Integer, List<ORILine>>> map;	// The list between Ori and HiC.
@@ -64,10 +69,11 @@ public class MergeHiCTimingORIToFile extends LineFileReader<HicTimingLine> {
 	 * @param outputFile	the output file
 	 * @param map			the list between Ori and HiC
 	 */
-	public MergeHiCTimingORIToFile(File inputFile, File outputFile, List<Map<Integer, List<ORILine>>> map) {
+	public MergeHiCTimingORIToFile(File inputFile, File outputFile, List<Map<Integer, List<ORILine>>> map, int insertOption) {
 		super(inputFile, new HicTimingLine(null));
 		this.outputFile = outputFile;
 		this.map = map;
+		this.insertOption = insertOption;
 		this.report = new HashMap<>();
 		projectChromosome = ProjectChromosome.getInstance();
 		isReadyToWrite = false;
@@ -78,39 +84,71 @@ public class MergeHiCTimingORIToFile extends LineFileReader<HicTimingLine> {
 	@Override
 	protected void processCurrentLine() {
 		if (isReadyToWrite) {
-
 			List<ORILine> currentList;
 			int chromosomeIndex;
 			int firstNumber = 0;
 			int secondNumber = 0;
+			String firstString = "-";
+			String secondString = "-";
 
 			// Get first number
 			chromosomeIndex = projectChromosome.getIndex(line.getFirstChromosome());
 			currentList = map.get(chromosomeIndex).get(line.getFirstPosition());
+
 			if (currentList != null) {
-				firstNumber = currentList.size();
-				//updateORIFound(currentList);
+				if (insertOption == NUMBER) {
+					firstNumber = currentList.size();
+					//updateORIFound(currentList);
+				} else if (insertOption == NAMES) {
+					firstString = getIDString(currentList);
+				}
 			}
 
 			// Get second number
 			chromosomeIndex = projectChromosome.getIndex(line.getSecondChromosome());
 			currentList = map.get(chromosomeIndex).get(line.getSecondPosition());
 			if (currentList != null) {
-				secondNumber = currentList.size();
-				//updateORIFound(currentList);
+				if (insertOption == NUMBER) {
+					secondNumber = currentList.size();
+					//updateORIFound(currentList);
+				} else if (insertOption == NAMES) {
+					secondString = getIDString(currentList);
+				}
 			}
 
+			String s = null;
+			if (insertOption == NUMBER) {
+				updateReport(firstNumber, secondNumber);
+				s = buildLine(line, firstNumber, secondNumber);
+			} else if (insertOption == NAMES) {
+				s = buildLine(line, firstString, secondString);
+			}
 
-			updateReport(firstNumber, secondNumber);
-
-			String s = buildLine(line, firstNumber, secondNumber);
-
-			try {
-				out.write(s + "\n");
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (s != null) {
+				try {
+					out.write(s + "\n");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
+	}
+
+
+	private String getIDString (List<ORILine> currentList) {
+		String names = "";
+		int size = currentList.size();
+		if (size == 0) {
+			names = "-";
+		} else {
+			for (int i = 0; i < size; i++) {
+				names += currentList.get(i).getElements()[3];
+				if (i < (size - 1)) {
+					names += ";";
+				}
+			}
+		}
+		return names;
 	}
 
 
@@ -131,6 +169,27 @@ public class MergeHiCTimingORIToFile extends LineFileReader<HicTimingLine> {
 		s += line.getSecondPosition() + "\t";
 		s += line.getSecondTiming() + "\t";
 		s += secondNumber;
+		return s;
+	}
+
+
+	/**
+	 * Create the line to insert
+	 * @param line			the native line
+	 * @param firstNames	the first names to insert
+	 * @param secondNames	the second names to insert
+	 * @return	the line to insert
+	 */
+	private String buildLine (HicTimingLine line, String firstNames, String secondNames) {
+		String s = "";
+		s += line.getFirstChromosome() + "\t";
+		s += line.getFirstPosition() + "\t";
+		s += line.getFirstTiming() + "\t";
+		s += firstNames + "\t";
+		s += line.getSecondChromosome() + "\t";
+		s += line.getSecondPosition() + "\t";
+		s += line.getSecondTiming() + "\t";
+		s += secondNames;
 		return s;
 	}
 
@@ -238,7 +297,9 @@ public class MergeHiCTimingORIToFile extends LineFileReader<HicTimingLine> {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(getReportNumber());
+		if (insertOption == NUMBER) {
+			System.out.println(getReportNumber());
+		}
 		//getDetailORIFound();
 	}
 

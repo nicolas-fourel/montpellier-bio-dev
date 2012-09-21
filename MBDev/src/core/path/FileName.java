@@ -50,6 +50,7 @@ public enum FileName {
 	// HiC/Timing/Ori files - Desprat
 	HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN_ORI_NUMBER_ALL ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-desprat.nodup.clean.ori-number-all.txt"),
 	HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN_ORI_NUMBER_INF_5KB ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-desprat.nodup.clean.ori-number-inf-5kb.txt"),
+	HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN_ORI_NAMES_INF_5KB ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-desprat.nodup.clean.ori-names-inf-5kb.txt"),
 
 	// HiC/Timing/Ori files - Gilbert
 	HIC_INTER_TIMING_GILBERT_NODUP_CLEAN_ORI_NUMBER_ALL ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-gilbert.nodup.clean.ori-number-all.txt"),

@@ -22,6 +22,7 @@
  ******************************************************************************/
 package main;
 
+import core.action.hicTimingOri.MergeHiCTimingORIToFile;
 import core.path.FileName;
 import core.path.Path;
 import core.script.Script;
@@ -43,7 +44,7 @@ public class Main {
 		Path.LOCATION = Path.WORK;
 
 
-		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN.toPath(), Path.getPath("output"), 5000);
+		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN.toPath(), Path.getPath("output"), 5000, MergeHiCTimingORIToFile.NAMES);
 	}
 
 }
