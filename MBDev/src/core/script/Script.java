@@ -73,7 +73,7 @@ public class Script {
 	 * @param hicTimingOutputPath	the output path of the HiC/timing file
 	 * @param extractOption			Desprat or Gilbert (see {@link TimingListExtractor})
 	 */
-	public static void mergeHiCWithGGilbertTiming(String timingInputPath, String hicInputPath, String hicTimingOutputPath, int extractOption) {
+	public static void mergeHiCWithFilTiming(String timingInputPath, String hicInputPath, String hicTimingOutputPath, int extractOption) {
 		// Timing action
 		File timingInputFile = new File(timingInputPath);
 		TimingListExtractor action = new TimingListExtractor(timingInputFile, extractOption);
@@ -168,8 +168,9 @@ public class Script {
 	 * @param oriInputPath				the Ori input file
 	 * @param hicTimingInputPath		the HiC/Timing input file
 	 * @param hicTimingOriOutputFile	the HiC/Timing/Ori output file
+	 * @param threshold	the length threshold (no threshold: -1)
 	 */
-	public static void mergeHiCTimingWithORI(String oriInputPath, String hicTimingInputPath, String hicTimingOriOutputFile) {
+	public static void mergeHiCTimingWithORI(String oriInputPath, String hicTimingInputPath, String hicTimingOriOutputFile, int threshold) {
 		File oriInputFile = new File(oriInputPath);
 		ORIListExtractor oriExtract = new ORIListExtractor(oriInputFile);
 		oriExtract.actionPerformed(null);
@@ -180,7 +181,7 @@ public class Script {
 		hicExtract.actionPerformed(null);
 		ChromosomeListOfLists<Integer> hicList = hicExtract.getList();
 
-		MergeHiCORIToChromosomeMap mergeMap = new MergeHiCORIToChromosomeMap(oriList, hicList);
+		MergeHiCORIToChromosomeMap mergeMap = new MergeHiCORIToChromosomeMap(oriList, hicList, threshold);
 		mergeMap.actionPerformed(null);
 		List<Map<Integer, List<ORILine>>> map = mergeMap.getList();
 

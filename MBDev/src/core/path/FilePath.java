@@ -29,7 +29,8 @@ package core.path;
  */
 public enum FilePath {
 
-	NICOLAS_HOME_PATH ("O:\\Montpellier\\");
+	NICOLAS_HOME_PATH ("O:\\Montpellier\\"),
+	NICOLAS_WORK_PATH ("D:\\Romain\\files\\");
 
 
 	private final String name;

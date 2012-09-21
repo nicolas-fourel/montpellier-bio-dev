@@ -47,8 +47,12 @@ public enum FileName {
 	HIC_INTRA_TIMING_GILBERT_REMOVAL_INF_100KB_NODUP_CLEAN ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.intra.timing-gilbert.removal-inf-100kb.nodup.clean.txt"),
 	HIC_INTRA_TIMING_GILBERT ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.intra.timing-gilbert.txt"),
 
+	// HiC/Timing/Ori files - Desprat
+	HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN_ORI_NUMBER_ALL ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-desprat.nodup.clean.ori-number-all.txt"),
+	HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN_ORI_NUMBER_INF_5KB ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-desprat.nodup.clean.ori-number-inf-5kb.txt"),
+
 	// HiC/Timing/Ori files - Gilbert
-	HIC_INTER_TIMING_GILBERT_NODUP_CLEAN_ORI_NUMBER ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-gilbert.nodup.clean.ori-number.txt"),
+	HIC_INTER_TIMING_GILBERT_NODUP_CLEAN_ORI_NUMBER_ALL ("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-gilbert.nodup.clean.ori-number-all.txt"),
 
 	// Timing files
 	TIMING_FILE_01 ("GSM500936_294986_H9hESC_532.spair"),

@@ -22,6 +22,10 @@
  ******************************************************************************/
 package main;
 
+import core.path.FileName;
+import core.path.Path;
+import core.script.Script;
+
 
 
 /**
@@ -34,8 +38,12 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		// Set file location
+		Path.USER = Path.NICOLAS;
+		Path.LOCATION = Path.WORK;
 
 
+		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN.toPath(), Path.getPath("output"), 5000);
 	}
 
 }

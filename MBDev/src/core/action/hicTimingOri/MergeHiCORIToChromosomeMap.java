@@ -48,19 +48,20 @@ public class MergeHiCORIToChromosomeMap extends Action {
 
 	private final ChromosomeListOfLists<ORILine> oriList;		// The Ori list.
 	private final ChromosomeListOfLists<Integer> hicList;		// The HiC list.
+	private final int length;
 
 
 	/**
 	 * Constructor of {@link MergeHiCORIToChromosomeMap}
 	 * @param oriList	the Ori list
 	 * @param hicList	the HiC list
+	 * @param threshold	the length threshold (no threshold: -1)
 	 */
-	public MergeHiCORIToChromosomeMap(ChromosomeListOfLists<ORILine> oriList,
-			ChromosomeListOfLists<Integer> hicList) {
+	public MergeHiCORIToChromosomeMap(ChromosomeListOfLists<ORILine> oriList, ChromosomeListOfLists<Integer> hicList, int threshold) {
 		actionName = "Merge HiC with ORI information to a map.";
 		this.oriList = oriList;
 		this.hicList = hicList;
-
+		length = threshold;
 		fullList = new ArrayList<>();
 
 		projectChromosome = ProjectChromosome.getInstance();
@@ -77,25 +78,41 @@ public class MergeHiCORIToChromosomeMap extends Action {
 			for (ORILine oriLine : currentORIList) {
 				int chromosomeIndex = projectChromosome.getIndex(oriLine
 						.getChromosome());
-				IntArrayAsIntegerList currentHICList = (IntArrayAsIntegerList) hicList
-						.get(chromosomeIndex);
-				int hicIndex = currentHICList.getClosestIndex(oriLine
-						.getStartPosition());
+				IntArrayAsIntegerList currentHICList = (IntArrayAsIntegerList) hicList.get(chromosomeIndex);
+				int hicIndex = currentHICList.getClosestIndex(oriLine.getStartPosition());
 				int hicValue = currentHICList.get(hicIndex);
 
-				Map<Integer, List<ORILine>> currentMap = fullList
-						.get(chromosomeIndex);
+				Map<Integer, List<ORILine>> currentMap = fullList.get(chromosomeIndex);
 				if (currentMap.get(hicValue) == null) {
 					currentMap.put(hicValue, new ArrayList<ORILine>());
 				}
 
-				int diff = Math.abs(hicValue - oriLine.getStartPosition());
-				if (diff < 10000) {
+				if (canBeInserted(hicValue, oriLine.getStartPosition())) {
 					currentMap.get(hicValue).add(oriLine);
 				}
 			}
 		}
 		return null;
+	}
+
+
+	/**
+	 * Check if the ORI can be related to the HiC position
+	 * @param hicPosition	the HiC position
+	 * @param oriPosition	the Ori position
+	 * @return	true if the position can be inserted, false otherwise
+	 */
+	private boolean canBeInserted (int hicPosition, int oriPosition) {
+		if (length == -1) {
+			return true;
+		}
+
+		int diff = Math.abs(hicPosition - oriPosition);
+		if (diff < length) {
+			return true;
+		}
+
+		return false;
 	}
 
 

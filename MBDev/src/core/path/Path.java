@@ -31,7 +31,12 @@ public class Path {
 	public static final int NICOLAS = 0;	// NICOLAS user variable.
 	public static final int ROMAIN = 1;		// ROMAIN user variable.
 
+	public static final int HOME = 10;		// HOME location.
+	public static final int WORK = 11;		// WORK location.
+
+
 	public static int USER = NICOLAS;		// Current user.
+	public static int LOCATION = WORK;		// Current location.
 
 
 	/**
@@ -43,7 +48,11 @@ public class Path {
 		String path = null;
 
 		if (USER == NICOLAS) {
-			path = FilePath.NICOLAS_HOME_PATH.toString() + fileName;
+			if (LOCATION == HOME) {
+				path = FilePath.NICOLAS_HOME_PATH.toString() + fileName;
+			} else if (LOCATION == WORK) {
+				path = FilePath.NICOLAS_WORK_PATH.toString() + fileName;
+			}
 		}
 
 		return path;
