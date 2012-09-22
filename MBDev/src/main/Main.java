@@ -27,24 +27,21 @@ import core.path.FileName;
 import core.path.Path;
 import core.script.Script;
 
-
-
 /**
  * @author Nicolas Fourel
  * @version 0.1
  */
 public class Main {
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// Set file location
-		Path.USER = Path.NICOLAS;
-		Path.LOCATION = Path.WORK;
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+	// Set file location
+	Path.USER = Path.NICOLAS;
+	Path.LOCATION = Path.HOME;
 
-
-		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN.toPath(), Path.getPath("output"), 5000, MergeHiCTimingORIToFile.NAMES);
-	}
+	Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN.toPath(), Path.getPath("output.txt"), 5000, MergeHiCTimingORIToFile.NAMES);
+    }
 
 }
