@@ -30,7 +30,8 @@ package core.path;
 public enum FilePath {
 
 	NICOLAS_HOME_PATH ("O:\\Montpellier\\"),
-	NICOLAS_WORK_PATH ("D:\\Romain\\files\\");
+	NICOLAS_WORK_PATH ("D:\\Romain\\files\\"),
+	ROMAIN_HOME_PATH ("C:\\Users\\Romain\\Documents\\RD_Nico_HiC");
 
 
 	private final String name;

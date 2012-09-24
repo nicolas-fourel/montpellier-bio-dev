@@ -53,6 +53,10 @@ public class Path {
 			} else if (LOCATION == WORK) {
 				path = FilePath.NICOLAS_WORK_PATH.toString() + fileName;
 			}
+		} if (USER == ROMAIN) {
+			if (LOCATION == HOME) {
+				path = FilePath.ROMAIN_HOME_PATH.toString() + fileName;
+			}
 		}
 
 		return path;

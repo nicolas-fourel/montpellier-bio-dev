@@ -38,7 +38,7 @@ public class Main {
      */
     public static void main(String[] args) {
 	// Set file location
-	Path.USER = Path.NICOLAS;
+	Path.USER = Path.ROMAIN;
 	Path.LOCATION = Path.HOME;
 
 	Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_DESPRAT_NODUP_CLEAN.toPath(), Path.getPath("output.txt"), 5000, MergeHiCTimingORIToFile.NAMES);
