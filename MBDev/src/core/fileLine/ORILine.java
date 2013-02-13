@@ -37,10 +37,18 @@ public class ORILine extends Line {
 
 	/**
 	 * Constructor of {@link ORILine}
+	 */
+	public ORILine () {
+		super(4, null);
+	}
+
+
+	/**
+	 * Constructor of {@link ORILine}
 	 * @param line a line from a file
 	 */
 	public ORILine (String line) {
-		super(3, line);
+		super(4, line);
 	}
 
 
@@ -52,6 +60,17 @@ public class ORILine extends Line {
 			elements = new String[0];				// we filter setting the elements as "empty" in order to be skipped in the process
 		} else {									// the line matches the requirements
 			String[] subElements = Utils.splitWithTab(line);	// we split with tabulations
+			initializeFromArray(subElements);
+		}
+
+		finalizeInitialization();
+	}
+
+
+	public void initializeFromArray (String[] subElements) {
+		if (subElements == null) {
+			elements = null;
+		} else {
 			if (subElements.length > 2) {
 				elements = subElements;
 			} else {
@@ -59,7 +78,12 @@ public class ORILine extends Line {
 			}
 		}
 
-		if ((elements != null) && (elements.length >= columnNumber)) {
+		finalizeInitialization();
+	}
+
+
+	private void finalizeInitialization () {
+		if ((elements != null) && (elements.length == columnNumber)) {
 			isValid = true;
 		} else {
 			isValid = false;

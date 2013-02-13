@@ -24,12 +24,12 @@ package core.action.ori;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import core.action.file.LineFileReader;
 import core.chromosome.ProjectChromosome;
 import core.fileLine.ORILine;
-import core.list.ChromosomeArrayListOfLists;
-import core.list.ChromosomeListOfLists;
+import core.list.file.ORILineFile;
 
 
 /**
@@ -42,8 +42,8 @@ public class ORIListExtractor extends LineFileReader<ORILine> {
 	private static final long serialVersionUID = 4374073285163085004L;
 
 	private final ProjectChromosome projectChromosome;		// The instance of the chromosome project.
-	private final ChromosomeListOfLists<ORILine> fullList;	// The list of Ori lines.
-
+	private final List<ORILineFile> list;
+	private final ORILine currentLine;
 
 	/**
 	 * Constructor of {@link ORIListExtractor}
@@ -52,27 +52,28 @@ public class ORIListExtractor extends LineFileReader<ORILine> {
 	public ORIListExtractor(File file) {
 		super(file, new ORILine(null));
 		actionName = "Extract ORI data to a list.";
-		fullList = new ChromosomeArrayListOfLists<>();
+		list = new ArrayList<>();
+		currentLine = new ORILine();
 		projectChromosome = ProjectChromosome.getInstance();
 		int chromosomeNumber = projectChromosome.getChromosomeList().size();
 		for (int i = 0; i < chromosomeNumber; i++) {
-			fullList.add(new ArrayList<ORILine>());
+			list.add(new ORILineFile());
 		}
 	}
 
 
 	@Override
 	protected void processCurrentLine() {
-		ORILine newORILine = new ORILine(nativeLine);
-		fullList.add(projectChromosome.get(newORILine.getChromosome()), newORILine);
+		currentLine.initialize(nativeLine);
+		list.get(projectChromosome.getIndex(currentLine.getChromosome())).add(currentLine);
 	}
 
 
 	/**
 	 * @return the list
 	 */
-	public ChromosomeListOfLists<ORILine> getList() {
-		return fullList;
+	public List<ORILineFile> getList() {
+		return list;
 	}
 
 

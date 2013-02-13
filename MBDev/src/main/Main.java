@@ -23,7 +23,6 @@
 package main;
 
 import core.action.hicTimingOri.MergeHiCTimingORIToFile;
-import core.path.FileName;
 import core.path.Path;
 import core.script.Script;
 
@@ -42,7 +41,7 @@ public class Main {
 		Path.LOCATION = Path.WORK;
 
 
-		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_GILBERT_NODUP_CLEAN.toPath(), Path.getPath("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-gilbert.nodup.clean.ori-names-all-clean.txt"), -1, MergeHiCTimingORIToFile.NAMES, true);
+		/*Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_GILBERT_NODUP_CLEAN.toPath(), Path.getPath("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-gilbert.nodup.clean.ori-names-all-clean.txt"), -1, MergeHiCTimingORIToFile.NAMES, true);
 		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_GILBERT_NODUP_CLEAN.toPath(), Path.getPath("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-gilbert.nodup.clean.ori-names-inf-2kb-clean.txt"), 2000, MergeHiCTimingORIToFile.NAMES, true);
 		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTER_TIMING_GILBERT_NODUP_CLEAN.toPath(), Path.getPath("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.inter.timing-gilbert.nodup.clean.ori-names-inf-5kb-clean.txt"), 5000, MergeHiCTimingORIToFile.NAMES, true);
 
@@ -58,7 +57,12 @@ public class Main {
 
 		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTRA_TIMING_GILBERT_REMOVAL_INF_100KB_NODUP_CLEAN.toPath(), Path.getPath("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.intra.timing-gilbert.removal-inf-100kb.nodup.clean.ori-number-all-clean.txt"), -1, MergeHiCTimingORIToFile.NUMBER, true);
 		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTRA_TIMING_GILBERT_REMOVAL_INF_100KB_NODUP_CLEAN.toPath(), Path.getPath("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.intra.timing-gilbert.removal-inf-100kb.nodup.clean.ori-number-inf-2kb-clean.txt"), 2000, MergeHiCTimingORIToFile.NUMBER, true);
-		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTRA_TIMING_GILBERT_REMOVAL_INF_100KB_NODUP_CLEAN.toPath(), Path.getPath("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.intra.timing-gilbert.removal-inf-100kb.nodup.clean.ori-number-inf-5kb-clean.txt"), 5000, MergeHiCTimingORIToFile.NUMBER, true);
+		Script.mergeHiCTimingWithORI(FileName.ORI_SORTED_RENAMED.toPath(), FileName.HIC_INTRA_TIMING_GILBERT_REMOVAL_INF_100KB_NODUP_CLEAN.toPath(), Path.getPath("GSE35156_GSM862723_hESC_HindIII_HiC.nodup.summary.intra.timing-gilbert.removal-inf-100kb.nodup.clean.ori-number-inf-5kb-clean.txt"), 5000, MergeHiCTimingORIToFile.NUMBER, true);*/
+
+		String hicTiming = "D:\\Documents\\Montpellier\\GSE35156_GSM892307_IMR90_HindIII_HiC_replicate.nodup.hic.summary.inter.timing.nodup.clean.txt";
+		String ori = "D:\\Documents\\Montpellier\\GSM927235_IMR-90.sorted.nodup.compact.rename.bed";
+		String output = "D:\\Documents\\Montpellier\\GSE35156_GSM892307_IMR90_HindIII_HiC_replicate.nodup.hic.summary.inter.timing.nodup.clean.ori-number-inf-5kb-clean.txt";
+		Script.mergeHiCTimingWithORI(ori, hicTiming, output, 5000, MergeHiCTimingORIToFile.NUMBER, true);
 	}
 
 }

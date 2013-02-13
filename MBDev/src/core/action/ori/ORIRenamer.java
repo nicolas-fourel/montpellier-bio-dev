@@ -34,7 +34,7 @@ import core.chromosome.Chromosome;
 import core.chromosome.ProjectChromosome;
 import core.counter.ChromosomeCounter;
 import core.fileLine.ORILine;
-import core.list.ChromosomeListOfLists;
+import core.list.file.ORILineFile;
 
 
 /**
@@ -47,7 +47,7 @@ public class ORIRenamer extends Action {
 	private static final long serialVersionUID = 4495558610088027673L;
 
 	private final File outputFile;							// The output file.
-	private final ChromosomeListOfLists<ORILine> oriList;	// The list of Ori lines.
+	private final List<ORILineFile> oriList;	// The list of Ori lines.
 	private final ChromosomeCounter counter;				// The instance of the chromosome counter.
 
 	private List<ORILine> insertedORI;	// The list of inserted Ori
@@ -60,7 +60,7 @@ public class ORIRenamer extends Action {
 	 * @param outputFile	the output file
 	 * @param list			the list of Ori lines
 	 */
-	public ORIRenamer(File outputFile, ChromosomeListOfLists<ORILine> list) {
+	public ORIRenamer(File outputFile, List<ORILineFile> list) {
 		this.outputFile = outputFile;
 		oriList = list;
 		insertedORI = new ArrayList<>();
@@ -71,14 +71,15 @@ public class ORIRenamer extends Action {
 
 	@Override
 	protected Object compute() {
-
-		for (Chromosome chromosome: ProjectChromosome.getInstance()) {
+		List<Chromosome> chromosomeList = ProjectChromosome.getInstance().getChromosomeList();
+		for (int i = 0; i < chromosomeList.size(); i++) {
 			insertedORI = new ArrayList<>();
-			List<ORILine> currentList = oriList.get(chromosome);
+			ORILineFile currentList = oriList.get(i);
 
 			int cpt = 0;
 
-			for (ORILine currentLine: currentList) {
+			for (int j = 0; j < currentList.getSize(); j++) {
+				ORILine currentLine = currentList.getLine(j);
 				cpt++;
 				if (cpt > 500) {
 					insertedORI = new ArrayList<>();

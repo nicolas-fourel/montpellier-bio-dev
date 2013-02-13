@@ -32,6 +32,7 @@ import core.chromosome.ProjectChromosome;
 import core.fileLine.ORILine;
 import core.list.ChromosomeListOfLists;
 import core.list.IntArrayAsIntegerList;
+import core.list.file.ORILineFile;
 
 
 /**
@@ -43,10 +44,10 @@ public class MergeHiCORIToChromosomeMap extends Action {
 	/** Generated default serial version ID */
 	private static final long serialVersionUID = 4495558610088027673L;
 
-	private final ProjectChromosome projectChromosome;			// The instance of the chromosome project.
-	private final List<Map<Integer, List<ORILine>>> fullList;	// The list between Ori and HiC.
+	private final ProjectChromosome projectChromosome;				// The instance of the chromosome project.
+	private final List<Map<Integer, Map<Integer, List<Integer>>>> fullList;	// The list between Ori and HiC.
 
-	private final ChromosomeListOfLists<ORILine> oriList;		// The Ori list.
+	private final List<ORILineFile> oriList;					// The Ori list.
 	private final ChromosomeListOfLists<Integer> hicList;		// The HiC list.
 	private final int length;
 
@@ -57,7 +58,7 @@ public class MergeHiCORIToChromosomeMap extends Action {
 	 * @param hicList	the HiC list
 	 * @param threshold	the length threshold (no threshold: -1)
 	 */
-	public MergeHiCORIToChromosomeMap(ChromosomeListOfLists<ORILine> oriList, ChromosomeListOfLists<Integer> hicList, int threshold) {
+	public MergeHiCORIToChromosomeMap(List<ORILineFile> oriList, ChromosomeListOfLists<Integer> hicList, int threshold) {
 		actionName = "Merge HiC with ORI information to a map.";
 		this.oriList = oriList;
 		this.hicList = hicList;
@@ -67,29 +68,31 @@ public class MergeHiCORIToChromosomeMap extends Action {
 		projectChromosome = ProjectChromosome.getInstance();
 		int chromosomeNumber = projectChromosome.getChromosomeList().size();
 		for (int i = 0; i < chromosomeNumber; i++) {
-			fullList.add(new HashMap<Integer, List<ORILine>>());
+			fullList.add(new HashMap<Integer, Map<Integer, List<Integer>>>());
 		}
 	}
 
 
 	@Override
 	protected Object compute() {
-		for (List<ORILine> currentORIList : oriList) {
-			for (ORILine oriLine : currentORIList) {
-				int chromosomeIndex = projectChromosome.getIndex(oriLine
-						.getChromosome());
+		for (int fileIndex = 0; fileIndex < oriList.size(); fileIndex++) {
+			ORILineFile currentORIList = oriList.get(fileIndex);
+			for (int oriIndex = 0; oriIndex < currentORIList.getSize(); oriIndex++) {
+				ORILine oriLine = currentORIList.getLine(oriIndex);
+				int chromosomeIndex = projectChromosome.getIndex(oriLine.getChromosome());
 				IntArrayAsIntegerList currentHICList = (IntArrayAsIntegerList) hicList.get(chromosomeIndex);
 				int hicIndex = currentHICList.getClosestIndex(oriLine.getStartPosition());
 				if (hicIndex != -1) {
 					int hicValue = currentHICList.get(hicIndex);
 
-					Map<Integer, List<ORILine>> currentMap = fullList.get(chromosomeIndex);
+					Map<Integer, Map<Integer, List<Integer>>> currentMap = fullList.get(chromosomeIndex);
 					if (currentMap.get(hicValue) == null) {
-						currentMap.put(hicValue, new ArrayList<ORILine>());
+						currentMap.put(hicValue, new HashMap<Integer, List<Integer>>());
+						currentMap.get(hicValue).put(fileIndex, new ArrayList<Integer>());
 					}
 
 					if (canBeInserted(hicValue, oriLine.getStartPosition())) {
-						currentMap.get(hicValue).add(oriLine);
+						currentMap.get(hicValue).get(fileIndex).add(oriIndex);
 					}
 				}
 			}
@@ -121,7 +124,7 @@ public class MergeHiCORIToChromosomeMap extends Action {
 	/**
 	 * @return the list
 	 */
-	public List<Map<Integer, List<ORILine>>> getList() {
+	public List<Map<Integer, Map<Integer, List<Integer>>>> getList() {
 		return fullList;
 	}
 

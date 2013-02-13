@@ -100,4 +100,21 @@ public abstract class Line {
 		return elements;
 	}
 
+
+	/**
+	 * Rebuild objects as a tab-delimited string
+	 * @param object an array of objects
+	 * @return the formatted line
+	 */
+	public static String formatLine (Object[] object) {
+		String s = "";
+		for (int i = 0; i < object.length; i++) {
+			s += object[i];
+			if (i < (object.length - 1)) {
+				s += "\t";
+			}
+		}
+		return s;
+	}
+
 }

@@ -37,6 +37,14 @@ public class HicTimingLine extends Line {
 
 	/**
 	 * Constructor of {@link HicTimingLine}
+	 */
+	public HicTimingLine () {
+		super(6, null);
+	}
+
+
+	/**
+	 * Constructor of {@link HicTimingLine}
 	 * @param line a line from a file
 	 */
 	public HicTimingLine (String line) {
@@ -55,6 +63,17 @@ public class HicTimingLine extends Line {
 			elements = new String[0];				// we filter setting the elements as "empty" in order to be skipped in the process
 		} else {									// the line matches the requirements
 			String[] subElements = Utils.splitWithTab(line);	// we split with tabulations
+			initializeFromArray(subElements);
+		}
+
+		finalizeInitialization();
+	}
+
+
+	public void initializeFromArray (String[] subElements) {
+		if (subElements == null) {
+			elements = null;
+		} else {
 			elements = new String[columnNumber];
 			int index = 0;
 			//for (int i = 0; i < subElements.length; i++) {
@@ -66,13 +85,17 @@ public class HicTimingLine extends Line {
 			}
 		}
 
+		finalizeInitialization();
+	}
+
+
+	private void finalizeInitialization () {
 		if ((elements != null) && (elements.length == columnNumber)) {
 			isValid = true;
 		} else {
 			isValid = false;
 		}
 	}
-
 
 	/**
 	 * @return the first chromosome name

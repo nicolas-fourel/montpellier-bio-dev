@@ -37,12 +37,11 @@ import core.action.hicTimingOri.MergeHiCORIToChromosomeMap;
 import core.action.hicTimingOri.MergeHiCTimingORIToFile;
 import core.action.ori.ORIListExtractor;
 import core.action.ori.ORIRenamer;
-import core.action.ori.ORISort;
 import core.action.timing.TimingListExtractor;
 import core.chromosome.ProjectChromosome;
-import core.fileLine.ORILine;
 import core.fileLine.TimingLine;
 import core.list.ChromosomeListOfLists;
+import core.list.file.ORILineFile;
 
 public class Script {
 
@@ -135,14 +134,14 @@ public class Script {
 	 * @param outputPath	the output file path
 	 */
 	public static void sortORIFile(String inputPath, String outputPath) {
-		File inputFile = new File(inputPath);
+		/*File inputFile = new File(inputPath);
 		ORIListExtractor oriExtract = new ORIListExtractor(inputFile);
 		oriExtract.actionPerformed(null);
 		ChromosomeListOfLists<ORILine> list = oriExtract.getList();
 
 		File outputFile = new File(outputPath);
 		ORISort oriSort = new ORISort(list, outputFile);
-		oriSort.actionPerformed(null);
+		oriSort.actionPerformed(null);*/
 	}
 
 
@@ -155,7 +154,7 @@ public class Script {
 		File inputFile = new File(inputPath);
 		ORIListExtractor oriExtract = new ORIListExtractor(inputFile);
 		oriExtract.actionPerformed(null);
-		ChromosomeListOfLists<ORILine> list = oriExtract.getList();
+		List<ORILineFile> list = oriExtract.getList();
 
 		File outputFile = new File(outputPath);
 		ORIRenamer oriRename = new ORIRenamer(outputFile, list);
@@ -176,7 +175,7 @@ public class Script {
 		File oriInputFile = new File(oriInputPath);
 		ORIListExtractor oriExtract = new ORIListExtractor(oriInputFile);
 		oriExtract.actionPerformed(null);
-		ChromosomeListOfLists<ORILine> oriList = oriExtract.getList();
+		List<ORILineFile> oriList = oriExtract.getList();
 
 		File inputFile = new File(hicTimingInputPath);
 		ExtractWindowsFromHicTiming hicExtract = new ExtractWindowsFromHicTiming(inputFile);
@@ -185,10 +184,10 @@ public class Script {
 
 		MergeHiCORIToChromosomeMap mergeMap = new MergeHiCORIToChromosomeMap(oriList, hicList, threshold);
 		mergeMap.actionPerformed(null);
-		List<Map<Integer, List<ORILine>>> map = mergeMap.getList();
+		List<Map<Integer, Map<Integer, List<Integer>>>> map = mergeMap.getList();
 
 		File outputFile = new File(hicTimingOriOutputFile);
-		MergeHiCTimingORIToFile mergeFile = new MergeHiCTimingORIToFile(inputFile, outputFile, map, insertOption, clean);
+		MergeHiCTimingORIToFile mergeFile = new MergeHiCTimingORIToFile(inputFile, outputFile, map, oriList, insertOption, clean);
 		mergeFile.actionPerformed(null);
 
 		int totalORI = 0;
@@ -199,24 +198,24 @@ public class Script {
 				.getChromosomeList().size();
 		for (int i = 0; i < chromosomeNumber; i++) {
 			System.out.println("Chromosome " + i + ":");
-			System.out.println("ORI: " + oriList.get(i).size());
+			System.out.println("ORI: " + oriList.get(i).getSize());
 			System.out.println("HiC: " + hicList.get(i).size());
 			System.out.println("Map: " + map.get(i).size());
 
-			totalORI += oriList.get(i).size();
+			totalORI += oriList.get(i).getSize();
 			totalHiC += hicList.get(i).size();
 			totalMap += map.get(i).size();
 			List<Integer> listHiCPos = new ArrayList<>(map.get(i).keySet());
-			for (Integer key : listHiCPos) {
+			/*for (Integer key : listHiCPos) {
 				List<ORILine> current = map.get(i).get(key);
 				totalMapORI += current.size();
-			}
+			}*/
 
 		}
 		System.out.println("Total ORI: " + totalORI);
 		System.out.println("Total HiC: " + totalHiC);
 		System.out.println("Total map: " + totalMap);
-		System.out.println("Total ORI from map: " + totalMapORI);
+		//System.out.println("Total ORI from map: " + totalMapORI);
 
 		/*
 		 * File outputFile = new File(

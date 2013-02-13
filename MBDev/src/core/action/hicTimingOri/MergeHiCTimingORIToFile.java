@@ -36,6 +36,7 @@ import core.action.file.LineFileReader;
 import core.chromosome.ProjectChromosome;
 import core.fileLine.HicTimingLine;
 import core.fileLine.ORILine;
+import core.list.file.ORILineFile;
 
 /**
  * @author Nicolas Fourel
@@ -54,7 +55,8 @@ public class MergeHiCTimingORIToFile extends LineFileReader<HicTimingLine> {
 
 	private final File outputFile;
 	private final ProjectChromosome projectChromosome; // The instance of the chromosome project.
-	private final List<Map<Integer, List<ORILine>>> map; // The list between Ori and HiC.
+	private final List<Map<Integer, Map<Integer, List<Integer>>>> map; // The list between Ori and HiC.
+	private final List<ORILineFile> oriList;
 
 	private final Map<Integer, List<Integer>> report; // The statistics report.
 
@@ -71,10 +73,11 @@ public class MergeHiCTimingORIToFile extends LineFileReader<HicTimingLine> {
 	 * @param insertOption  the Ori insert option (number or names)
 	 * @param clean true if the file has to be clean (no lines without Ori match), false to insert everything
 	 */
-	public MergeHiCTimingORIToFile(File inputFile, File outputFile, List<Map<Integer, List<ORILine>>> map, int insertOption, boolean clean) {
+	public MergeHiCTimingORIToFile(File inputFile, File outputFile, List<Map<Integer, Map<Integer, List<Integer>>>> map, List<ORILineFile> oriList, int insertOption, boolean clean) {
 		super(inputFile, new HicTimingLine(null));
 		this.outputFile = outputFile;
 		this.map = map;
+		this.oriList = oriList;
 		this.insertOption = insertOption;
 		this.clean = clean;
 		this.report = new HashMap<>();
@@ -118,9 +121,17 @@ public class MergeHiCTimingORIToFile extends LineFileReader<HicTimingLine> {
 	 */
 	private String getValue(String chromosome, int position) {
 		int chromosomeIndex = projectChromosome.getIndex(chromosome);
-		List<ORILine> currentList = map.get(chromosomeIndex).get(position);
+		Map<Integer, List<Integer>> currentMap = map.get(chromosomeIndex).get(position);
+		List<ORILine> currentList = new ArrayList<ORILine>();
+
+		for (Integer fileIndex: currentMap.keySet()) {
+			for (Integer oriIndex: currentMap.get(fileIndex)) {
+				currentList.add(oriList.get(fileIndex).getLine(oriIndex));
+			}
+		}
+
 		String value = null;
-		if (currentList == null) {
+		if (currentList.size() == 0) {
 			if (insertOption == NUMBER) {
 				value = "0";
 			} else if (insertOption == NAMES) {
