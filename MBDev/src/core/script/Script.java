@@ -170,8 +170,9 @@ public class Script {
 	 * @param hicTimingOriOutputFile	the HiC/Timing/Ori output file
 	 * @param threshold	the length threshold (no threshold: -1)
 	 * @param insertOption the Ori insert option (number or names) (see {@link MergeHiCTimingORIToFile}
+	 * @param clean true if the file has to be clean (no lines without Ori match), false to insert everything
 	 */
-	public static void mergeHiCTimingWithORI(String oriInputPath, String hicTimingInputPath, String hicTimingOriOutputFile, int threshold, int insertOption) {
+	public static void mergeHiCTimingWithORI(String oriInputPath, String hicTimingInputPath, String hicTimingOriOutputFile, int threshold, int insertOption, boolean clean) {
 		File oriInputFile = new File(oriInputPath);
 		ORIListExtractor oriExtract = new ORIListExtractor(oriInputFile);
 		oriExtract.actionPerformed(null);
@@ -187,7 +188,7 @@ public class Script {
 		List<Map<Integer, List<ORILine>>> map = mergeMap.getList();
 
 		File outputFile = new File(hicTimingOriOutputFile);
-		MergeHiCTimingORIToFile mergeFile = new MergeHiCTimingORIToFile(inputFile, outputFile, map, insertOption);
+		MergeHiCTimingORIToFile mergeFile = new MergeHiCTimingORIToFile(inputFile, outputFile, map, insertOption, clean);
 		mergeFile.actionPerformed(null);
 
 		int totalORI = 0;

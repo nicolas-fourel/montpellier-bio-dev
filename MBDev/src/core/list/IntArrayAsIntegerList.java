@@ -163,6 +163,10 @@ public class IntArrayAsIntegerList extends AbstractList<Integer> implements Seri
 	 * @return the closest index where the value is found.
 	 */
 	public int getClosestIndex (int value) {
+		if (size == 0) {
+			return -1;
+		}
+
 		int indexFound = getIndex(value);
 
 		if ((indexFound == 0) || (data[indexFound] == value)) {
