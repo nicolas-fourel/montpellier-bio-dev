@@ -124,9 +124,11 @@ public class MergeHiCTimingORIToFile extends LineFileReader<HicTimingLine> {
 		Map<Integer, List<Integer>> currentMap = map.get(chromosomeIndex).get(position);
 		List<ORILine> currentList = new ArrayList<ORILine>();
 
-		for (Integer fileIndex: currentMap.keySet()) {
-			for (Integer oriIndex: currentMap.get(fileIndex)) {
-				currentList.add(oriList.get(fileIndex).getLine(oriIndex));
+		if (currentMap != null) {
+			for (Integer fileIndex: currentMap.keySet()) {
+				for (Integer oriIndex: currentMap.get(fileIndex)) {
+					currentList.add(oriList.get(fileIndex).getLine(oriIndex));
+				}
 			}
 		}
 

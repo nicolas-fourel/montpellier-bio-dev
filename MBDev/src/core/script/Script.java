@@ -23,7 +23,6 @@
 package core.script;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -193,7 +192,7 @@ public class Script {
 		int totalORI = 0;
 		int totalHiC = 0;
 		int totalMap = 0;
-		int totalMapORI = 0;
+		//int totalMapORI = 0;
 		int chromosomeNumber = ProjectChromosome.getInstance()
 				.getChromosomeList().size();
 		for (int i = 0; i < chromosomeNumber; i++) {
@@ -205,8 +204,8 @@ public class Script {
 			totalORI += oriList.get(i).getSize();
 			totalHiC += hicList.get(i).size();
 			totalMap += map.get(i).size();
-			List<Integer> listHiCPos = new ArrayList<>(map.get(i).keySet());
-			/*for (Integer key : listHiCPos) {
+			/*List<Integer> listHiCPos = new ArrayList<>(map.get(i).keySet());
+			for (Integer key : listHiCPos) {
 				List<ORILine> current = map.get(i).get(key);
 				totalMapORI += current.size();
 			}*/

@@ -39,7 +39,7 @@ public class HicTimingLine extends Line {
 	 * Constructor of {@link HicTimingLine}
 	 */
 	public HicTimingLine () {
-		super(6, null);
+		super(7, null);
 	}
 
 
@@ -48,7 +48,7 @@ public class HicTimingLine extends Line {
 	 * @param line a line from a file
 	 */
 	public HicTimingLine (String line) {
-		super(6, line);
+		super(7, line);
 	}
 
 

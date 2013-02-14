@@ -84,14 +84,16 @@ public class MergeHiCORIToChromosomeMap extends Action {
 				int hicIndex = currentHICList.getClosestIndex(oriLine.getStartPosition());
 				if (hicIndex != -1) {
 					int hicValue = currentHICList.get(hicIndex);
-
-					Map<Integer, Map<Integer, List<Integer>>> currentMap = fullList.get(chromosomeIndex);
-					if (currentMap.get(hicValue) == null) {
-						currentMap.put(hicValue, new HashMap<Integer, List<Integer>>());
-						currentMap.get(hicValue).put(fileIndex, new ArrayList<Integer>());
-					}
-
 					if (canBeInserted(hicValue, oriLine.getStartPosition())) {
+						Map<Integer, Map<Integer, List<Integer>>> currentMap = fullList.get(chromosomeIndex);
+						if (currentMap.get(hicValue) == null) {
+							currentMap.put(hicValue, new HashMap<Integer, List<Integer>>());
+						}
+						
+						if (currentMap.get(hicValue).get(fileIndex) == null) {
+							currentMap.get(hicValue).put(fileIndex, new ArrayList<Integer>());
+						}
+						
 						currentMap.get(hicValue).get(fileIndex).add(oriIndex);
 					}
 				}
